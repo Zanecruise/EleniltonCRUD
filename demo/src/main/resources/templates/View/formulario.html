@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal</title>
+    
+</head>
+<body>
+    
+    <form action="/processForm" method="post">
+        <label for="name">Nome Completo:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        
+        <label for="phone">Celular:</label><br>
+        <input type="tel" id="phone" name="phone" required><br>
+        
+        <label for="birthdate">Data de Nascimento:</label><br>
+        <input type="date" id="birthdate" name="birthdate" required><br>
+        
+        <label for="gender">Gênero:</label><br>
+        <select id="gender" name="gender" required>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
+            <option value="outro">Outro</option>
+        </select><br>
+        
+        <label for="country">País:</label><br>
+        <input type="text" id="country" name="country" required><br>
+        
+        <label for="state">Estado:</label><br>
+        <input type="text" id="state" name="state" required><br>
+        
+        <label for="city">Cidade:</label><br>
+        <input type="text" id="city" name="city" required><br>
+        
+        <label for="street">Rua:</label><br>
+        <input type="text" id="street" name="street" required><br>
+        
+        <label for="neighborhood">Bairro:</label><br>
+        <input type="text" id="neighborhood" name="neighborhood" required><br>
+        
+        <label for="lot_number">Número do Lote:</label><br>
+        <input type="text" id="lot_number" name="lot_number" required><br>
+        
+        <label for="complement">Complemento:</label><br>
+        <input type="text" id="complement" name="complement"><br>
+        
+        <input type="submit" value="Enviar">
+
+        <input type="button" id="btnExcluir" value="Excluir" disabled>
+
+    </form>
+    
+
+</body>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1b1b1b;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+input[type="submit"]:focus {
+    outline: none;
+}
+
+input[type="button"] {
+    width: 100%;
+    background-color: #db3333;
+    color: white;
+    padding: 12px 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover {
+    background-color: #ac2020;
+}
+
+input[type="button"]:focus {
+    outline: none;
+}
+
+
+</style>
+
+<script>
+
+    function habilitarExcluir() {
+            // Chame sua função Java aqui para verificar se o botão de Excluir deve ser habilitado
+            // Supondo que a função tenha o nome "verificarPermissaoExcluir()" e retorna true ou false
+            var podeExcluir = verificarPermissaoExcluir();
+
+            // Se a função retornar true, habilite o botão de Excluir
+            if (podeExcluir) {
+                document.getElementById("btnExcluir").disabled = false;
+            }
+        }
+
+    // Chame a função para habilitar o botão de Excluir
+    habilitarExcluir();
+
+
+</script>
+
+</html>

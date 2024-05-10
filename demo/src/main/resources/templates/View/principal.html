@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Pessoas</title>
+</head>
+<body>
+    <h1>Listagem de Pessoas</h1>
+    
+    <!-- Tabela para listar as pessoas -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Celular</th>
+                <th>Data de Nascimento</th>
+                <th>Gênero</th>
+                <th>Endereço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterando sobre as pessoas e preenchendo a tabela -->
+            <tr th:each="pessoa : ${pessoas}">
+                <td th:text="${pessoa.nome}"></td>
+                <td th:text="${pessoa.email}"></td>
+                <td th:text="${pessoa.celular}"></td>
+                <td th:text="${#dates.format(pessoa.dataNascimento, 'dd/MM/yyyy')}"></td>
+                <td th:text="${pessoa.genero}"></td>
+                <td th:text="${pessoa.endereco}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Botão para criar uma nova pessoa -->
+    <a href="/criar-pessoa">Criar Pessoa</a>
+
+</body>
+</html>
