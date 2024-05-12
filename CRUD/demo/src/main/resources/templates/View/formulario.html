@@ -22,11 +22,7 @@
         <input type="date" id="birthdate" name="birthdate" required><br>
         
         <label for="gender">Gênero:</label><br>
-        <select id="gender" name="gender" required>
-            <option value="masculino">Masculino</option>
-            <option value="feminino">Feminino</option>
-            <option value="outro">Outro</option>
-        </select><br>
+        <input type="text" id="gender" name="gender" required><br>
         
         <label for="country">País:</label><br>
         <input type="text" id="country" name="country" required><br>
@@ -54,7 +50,25 @@
         <input type="button" id="btnExcluir" value="Excluir" disabled>
 
     </form>
-    
+
+    <script>
+
+        // Função para habilitar o botão de Excluir
+        function habilitarExcluir() {
+            // Chame sua função Java aqui para verificar se o botão de Excluir deve ser habilitado
+            // Supondo que a função tenha o nome "verificarPermissaoExcluir()" e retorna true ou false
+            var podeExcluir = verificarPermissaoExcluir();
+
+            // Se a função retornar true, habilite o botão de Excluir
+            if (podeExcluir) {
+                document.getElementById("btnExcluir").disabled = false;
+            }
+        }
+
+        // Chame a função para habilitar o botão de Excluir
+        habilitarExcluir();
+
+    </script>
 
 </body>
 
@@ -139,26 +153,5 @@ input[type="button"]:focus {
     outline: none;
 }
 
-
 </style>
-
-<script>
-
-    function habilitarExcluir() {
-            // Chame sua função Java aqui para verificar se o botão de Excluir deve ser habilitado
-            // Supondo que a função tenha o nome "verificarPermissaoExcluir()" e retorna true ou false
-            var podeExcluir = verificarPermissaoExcluir();
-
-            // Se a função retornar true, habilite o botão de Excluir
-            if (podeExcluir) {
-                document.getElementById("btnExcluir").disabled = false;
-            }
-        }
-
-    // Chame a função para habilitar o botão de Excluir
-    habilitarExcluir();
-
-
-</script>
-
 </html>
