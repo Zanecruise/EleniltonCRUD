@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import com.example.demo.Repository.Insert;
+import com.example.demo.Repository.Crud;
 
 @Controller
 public class SeuController {
 
-    private final Insert inserter;
+    private final Crud crud;
 
     @Autowired
-    public SeuController(Insert inserter) {
-        this.inserter = inserter;
+    public SeuController(Crud crud) {
+        this.crud = crud;
     }
 
     @RequestMapping("/form")
@@ -41,21 +41,28 @@ public class SeuController {
 
                                 
 
-        inserter.inserir("Nome", name,0);
-        inserter.inserir("Email", email,0);
-        inserter.inserir("Celular", phone,0);
-        inserter.inserir("Data_nascimento", birthdate,0);
-        inserter.inserir("Genero", gender,0);
-        inserter.inserir("Pais", country,0);
-        inserter.inserir("Estado", state,0);
-        inserter.inserir("Cidade", city,0);
-        inserter.inserir("Rua", street,0);
-        inserter.inserir("Bairro", neighborhood,0);
-        inserter.inserir("Numero_Lote", lotNumber,0);
-        inserter.inserir("Complemento", complement,0);
+        crud.inserir("Nome", name,0);
 
-        inserter.inserir("Endereco", complement,0);
-        inserter.inserir("Pessoa", complement,0);
+        int id_gerado = crud.getIDNome(name);
+
+        crud.inserir("Email", email,0);
+        crud.inserir("Celular", phone,0);
+        crud.inserir("Data_nascimento", birthdate,0);
+        crud.inserir("Genero", gender,0);
+
+        crud.inserir("Pais", country,0);
+
+        crud.inserir("Complemento", complement,0);
+
+        crud.inserirEstado(state, id_gerado);
+        crud.inserirCidade(city, id_gerado);
+        crud.inserirRua(street, id_gerado);
+        crud.inserirBairro(neighborhood, id_gerado);
+        crud.inserirNumeroLote(lotNumber, id_gerado);
+        
+        crud.inserirEndereco(id_gerado);
+        crud.inserirPessoa(id_gerado);
+
         
 
         return "redirect:/";
