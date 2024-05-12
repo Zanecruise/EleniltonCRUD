@@ -38,7 +38,6 @@ public class SeuController {
                               @RequestParam("lot_number") String lotNumber,
                               @RequestParam("complement") String complement) {
 
-
                                 
 
         crud.inserir("Nome", name,0);
