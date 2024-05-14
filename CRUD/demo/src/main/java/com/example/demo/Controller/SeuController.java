@@ -69,6 +69,48 @@ public class SeuController {
         return "redirect:/";
     }
 
+    @PostMapping("/processFormEdit")
+    public String processFormEdit(@RequestParam("name") String name,
+                              @RequestParam("email") String email,
+                              @RequestParam("phone") String phone,
+                              @RequestParam("birthdate") String birthdate,
+                              @RequestParam("gender") String gender,
+                              @RequestParam("country") String country,
+                              @RequestParam("state") String state,
+                              @RequestParam("city") String city,
+                              @RequestParam("street") String street,
+                              @RequestParam("neighborhood") String neighborhood,
+                              @RequestParam("lot_number") String lotNumber,
+                              @RequestParam("complement") String complement) {
+
+                                
+        int id_gerado = crud.getIDNome(name);          
+
+        crud.atualizar("Nome", name,id_gerado);
+        crud.atualizar("Email", email,id_gerado);
+        crud.atualizar("Celular", phone,id_gerado);
+        crud.atualizar("Data_nascimento", birthdate,id_gerado);
+        crud.atualizar("Genero", gender,id_gerado);
+
+        crud.atualizar("Pais", country,id_gerado);
+
+        crud.atualizar("Estado", state, id_gerado);
+
+        
+        crud.atualizar("Cidade", city, id_gerado);
+        crud.atualizar("Rua", street, id_gerado);
+        crud.atualizar("Bairo", neighborhood, id_gerado);
+        crud.atualizar("Numero_Lote", lotNumber, id_gerado); 
+        crud.atualizar("Complemento", complement, id_gerado);
+
+        crud.atualizarPessoa(id_gerado);
+
+
+                           
+
+        return "redirect:/";
+    }
+
     // Outros métodos do controlador, se houver
 
 }

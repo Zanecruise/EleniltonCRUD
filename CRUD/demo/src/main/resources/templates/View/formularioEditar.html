@@ -8,7 +8,7 @@
 </head>
 <body>
     
-    <form action="/processForm" method="post">
+    <form action="/processFormEdit" method="post">
         <label for="name">Nome Completo:</label><br>
         <input type="text" id="name" name="name" required><br>
         
@@ -47,10 +47,64 @@
         
         <input type="submit" value="Enviar">
 
+        <input type="button" id="btnExcluir" value="Excluir" disabled>
 
     </form>
 
     <script>
+
+        // Função para habilitar o botão de Excluir
+        //function habilitarExcluir() {
+            // Chame sua função Java aqui para verificar se o botão de Excluir deve ser habilitado
+            // Supondo que a função tenha o nome "verificarPermissaoExcluir()" e retorna true ou false
+          //  var podeExcluir = verificarPermissaoExcluir();
+
+            // Se a função retornar true, habilite o botão de Excluir
+         //   if (podeExcluir) {
+         //       document.getElementById("btnExcluir").disabled = false;
+          //  }
+       // }
+
+        // Chame a função para habilitar o botão de Excluir
+      //  habilitarExcluir();
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Função para obter os valores dos parâmetros de consulta
+            function obterParametro(url, parametro) {
+                const parametros = new URLSearchParams(url.search);
+                return parametros.get(parametro);
+            }
+
+            // Obter os valores dos parâmetros de consulta da URL
+            const url = new URL(window.location.href);
+            const name = obterParametro(url, 'nome');
+            const email = obterParametro(url, 'email');
+            const phone = obterParametro(url, 'celular');
+            const birthdate = obterParametro(url, 'data_nascimento');
+            const gender = obterParametro(url, 'genero');
+            const country = obterParametro(url, 'pais');
+            const state = obterParametro(url, 'estado');
+            const city = obterParametro(url, 'cidade');
+            const street = obterParametro(url, 'rua');
+            const neighborhood = obterParametro(url, 'bairro');
+            const lot_number = obterParametro(url, 'numero_lote');
+            const complement = obterParametro(url, 'complemento');
+
+            // Preencher os campos do formulário com os valores dos parâmetros de consulta
+            document.getElementById("name").value = name;
+            document.getElementById("email").value = email;
+            document.getElementById("phone").value = phone;
+            document.getElementById("birthdate").value = birthdate;
+            document.getElementById("gender").value = gender;
+            document.getElementById("country").value = country;
+            document.getElementById("state").value = state;
+            document.getElementById("city").value = city;
+            document.getElementById("street").value = street;
+            document.getElementById("neighborhood").value = neighborhood;
+            document.getElementById("lot_number").value = lot_number;
+            document.getElementById("complement").value = complement;
+        });
+
 
     </script>
 

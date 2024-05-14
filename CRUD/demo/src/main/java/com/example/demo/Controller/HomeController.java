@@ -19,5 +19,9 @@ public class HomeController {
         return "formulario";
     }
 
+    @GetMapping("/editar-pessoa") // formulario.html
+    public String editarPessoa() {
+        return "formularioEditar";
+    }
 
 }
