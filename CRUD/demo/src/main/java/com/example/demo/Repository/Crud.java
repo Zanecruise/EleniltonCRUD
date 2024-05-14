@@ -61,7 +61,7 @@ public class Crud implements InterfaceRepository {
 
     public int getIDNome(String descricao) {
 
-        String sql = "SELECT id FROM Celular WHERE descricao = ?";
+        String sql = "SELECT id FROM Nome WHERE descricao = ?";
 
         int id = jdbcTemplate.queryForObject(sql, Integer.class, descricao);
 
@@ -149,6 +149,14 @@ public class Crud implements InterfaceRepository {
         pessoa = jdbcTemplate.queryForList(sql);
 
         return pessoa;
+    }
+
+    public void atualizarPessoa(int id_gerado) {
+        
+        String sql = "UPDATE Pessoa SET id_nome = ?, id_genero = ?, id_data_nascimento = ?, id_email = ?, id_celular = ?, id_complemento = ? WHERE id = ?";
+
+        jdbcTemplate.update(sql, id_gerado, id_gerado, id_gerado, id_gerado, id_gerado, id_gerado);
+
     }
     
 
