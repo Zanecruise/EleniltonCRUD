@@ -55,47 +55,60 @@
     <!-- Divs geradas automaticamente para cada pessoa -->
     <div id="personContainer"></div>
 
+    <ul id="myList">
+        <li>Coffee</li>
+        <li>Tea</li>
+    </ul>
+
     <footer>
         <!-- Botão verde e pequeno para criar uma nova pessoa -->
         <a class="create-button" href="/criar-pessoa">Criar Pessoa</a>
     </footer>
 
     <script>
-        function generatePersonDivs(pessoas) {
-            var container = document.getElementById("personContainer");
+        document.addEventListener("DOMContentLoaded", function() {
 
-            // Limpa o conteúdo anterior
-            container.innerHTML = "";
+            
 
-            // Itera sobre as pessoas e cria uma div para cada uma
-            pessoas.forEach(function(pessoa) {
-                var div = document.createElement("div");
-                div.classList.add("person-box");
+            fetch('/chamarFuncaoJava')
+                .then(response => response.json())
+                .then(data => {
 
-                // Cria um parágrafo para cada atributo da pessoa
-                for (var atributo in pessoa) {
-                    if (pessoa.hasOwnProperty(atributo)) {
-                        var p = document.createElement("p");
-                        p.textContent = atributo + ": " + pessoa[atributo];
-                        div.appendChild(p);
+                    for (let index = 0; index < data.length; index++) {
+
+                        const node = document.createElement("li");
+
+                        // Create a text node:
+                        const textnode = document.createTextNode(data[index]);
+
+                        //Append the text node to the "li" node:
+                        node.appendChild(textnode);
+
+                        // Append the "li" node to the list:
+                        document.getElementById("myList").appendChild(node);
+                
+                
                     }
-                }
+                    //console.log(data); // Exibe a resposta do servidor no console do navegador
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
 
-                // Adiciona a div ao contêiner
-                container.appendChild(div);
-            });
-        }
+            
 
-        // Fazendo a requisição AJAX para obter os dados das pessoas
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/pessoas");
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var pessoas = JSON.parse(xhr.responseText);
-                generatePersonDivs(pessoas);
-            }
-        };
-        xhr.send();
+                // Create an "li" node:
+            
+
+
+
+
+        });
+
+
+        
+
+        
     </script>
 </body>
 </html>
