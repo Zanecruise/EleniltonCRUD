@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.Repository.Crud;
 
+
+// FUNCOES PARA FAZER O CRUD
 @Controller
 public class SeuController {
 
@@ -51,18 +53,18 @@ public class SeuController {
 
         crud.inserir("Pais", country,0);
 
-        crud.inserir("Complemento", complement,0);
+        
 
         crud.inserirEstado(state, id_gerado);
         crud.inserirCidade(city, id_gerado);
         crud.inserirRua(street, id_gerado);
         crud.inserirBairro(neighborhood, id_gerado);
-        crud.inserirNumeroLote(lotNumber, id_gerado);
-        
-        crud.inserirEndereco(id_gerado);
+        crud.inserirNumeroLote(lotNumber, id_gerado); 
+        crud.inserirComplemento(complement, id_gerado);
+
         crud.inserirPessoa(id_gerado);
 
-        
+                           
 
         return "redirect:/";
     }
