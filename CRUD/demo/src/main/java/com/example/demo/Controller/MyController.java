@@ -27,5 +27,28 @@ public class MyController {
         return crud.getPessoas();
     }
 
+    @GetMapping("/chamarCEP")
+    public List<Map<String, Object>> chamarCEP() {
+        // Chame sua função Java aqui
+        
+        return crud.getCEPS();
+    }
+
+    @GetMapping("/chamarSANGUE")
+    public List<Map<String, Object>> chamarSANGUE() {
+        // Chame sua função Java aqui
+        
+        return crud.getSANGUE();
+    }
+
+    @GetMapping("/chamarCIVIL")
+    public List<Map<String, Object>> chamarCIVIL() {
+        // Chame sua função Java aqui
+        
+        return crud.getCIVIL();
+    }
+
+    
+
     
 }

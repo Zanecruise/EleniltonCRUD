@@ -9,6 +9,9 @@
 <body>
     
     <form action="/processFormEdit" method="post">
+
+        <h2>Pessoa</h2>
+
         <label for="name">Nome Completo:</label><br>
         <input type="text" id="name" name="name" required><br>
         
@@ -23,21 +26,53 @@
         
         <label for="gender">Gênero:</label><br>
         <input type="text" id="gender" name="gender" required><br>
+
+        <label for="relation" class="NEW">Estado Civil Atual:</label><br>
+        <input type="text"  id="relation" name="relation" readonly><br>
+
+        <label for="relationNEW">Estado Civil:</label><br>
+        <select id="relationNEW">
+            <!-- Options will be added dynamically -->
+        </select>
+
+        <input type="text" id="relationNUM" name="relationNUM" readonly><br>
+
+        <label for="blood" class="NEW">Tipo Sanguineo Atual:</label><br>
+        <input type="text"  id="blood" name="blood" readonly><br>
+
+        <label for="bloodNEW">Tipo Sanguineo:</label><br>
+        <select id="bloodNEW">
+            <!-- Options will be added dynamically -->
+        </select>
+
+        <input type="text" id="bloodNUM" name="bloodNUM" readonly><br>
+
+        <h2>Local</h2>
+
+        <label for="cep" class="NEW">CEP Atual:</label><br>
+        <input type="text"  id="cep" name="cep" readonly><br>
+
+        <label for="cepNEW">CEP:</label><br>
+        <select id="cepNEW">
+            <!-- Options will be added dynamically -->
+        </select>
+
+        <input type="text" id="relationNUM" name="relationNUM" readonly><br>
         
         <label for="country">País:</label><br>
-        <input type="text" id="country" name="country" required><br>
+        <input type="text" id="country" name="country" readonly><br> 
         
         <label for="state">Estado:</label><br>
-        <input type="text" id="state" name="state" required><br>
+        <input type="text" id="state" name="state" readonly><br> 
         
-        <label for="city">Cidade:</label><br>
-        <input type="text" id="city" name="city" required><br>
+        <label for="city">Cidade:</label><br> 
+        <input type="text" id="city" name="city" readonly><br> 
         
         <label for="street">Rua:</label><br>
-        <input type="text" id="street" name="street" required><br>
+        <input type="text" id="street" name="street" readonly><br> 
         
         <label for="neighborhood">Bairro:</label><br>
-        <input type="text" id="neighborhood" name="neighborhood" required><br>
+        <input type="text" id="neighborhood" name="neighborhood" readonly><br> 
         
         <label for="lot_number">Número do Lote:</label><br>
         <input type="text" id="lot_number" name="lot_number" required><br>
@@ -68,7 +103,89 @@
         // Chame a função para habilitar o botão de Excluir
       //  habilitarExcluir();
 
+      
+
+        let ceps;
+        let sangues;
+        let civils;
+
+        let selectedValue
+
         document.addEventListener("DOMContentLoaded", function() {
+            fetch('/chamarCEP')
+                .then(response => response.json())
+                .then(responseData => {
+                    ceps = responseData; // Atribua os dados da resposta à variável data
+                    const selectElement = document.getElementById("cepNUM");
+                    
+                    ceps.forEach((objeto, index) => {
+                        const option = document.createElement("option");
+                        option.value = index; // Use o índice como valor para identificar o objeto selecionado
+                        option.text = objeto.cep; // Exibe o nome do objeto na lista
+                        selectElement.appendChild(option);
+
+
+                    });
+
+                    
+
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Ocorreu um erro ao obter os dados');
+                });
+
+            fetch('/chamarSANGUE')
+                .then(response => response.json())
+                .then(responseData => {
+                    sangues = responseData; // Atribua os dados da resposta à variável data
+                    const selectElement = document.getElementById("bloodNUM");
+                    
+                    sangues.forEach((objeto, index) => {
+                        const option = document.createElement("option");
+                        option.value = index; // Use o índice como valor para identificar o objeto selecionado
+                        option.text = objeto.tipo_sangue; // Exibe o nome do objeto na lista
+                        selectElement.appendChild(option);
+
+
+                    });
+
+                    
+
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Ocorreu um erro ao obter os dados');
+                });
+
+            fetch('/chamarCIVIL')
+                .then(response => response.json())
+                .then(responseData => {
+                    civils = responseData; // Atribua os dados da resposta à variável data
+                    const selectElement = document.getElementById("relationNUM");
+                    
+                    civils.forEach((objeto, index) => {
+                        const option = document.createElement("option");
+                        option.value = index; // Use o índice como valor para identificar o objeto selecionado
+                        option.text = objeto.civil; // Exibe o nome do objeto na lista
+                        selectElement.appendChild(option);
+
+
+                    });
+
+                    
+
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Ocorreu um erro ao obter os dados');
+                });
+            
+
+
+
+
+
             // Função para obter os valores dos parâmetros de consulta
             function obterParametro(url, parametro) {
                 const parametros = new URLSearchParams(url.search);
@@ -82,12 +199,15 @@
             const phone = obterParametro(url, 'celular');
             const birthdate = obterParametro(url, 'data_nascimento');
             const gender = obterParametro(url, 'genero');
+            const blood = obterParametro(url, 'tipo_sanguineo');
+            const relation = obterParametro(url, 'estado_civil');
+            const cep = obterParametro(url, 'cep');
             const country = obterParametro(url, 'pais');
             const state = obterParametro(url, 'estado');
             const city = obterParametro(url, 'cidade');
-            const street = obterParametro(url, 'rua');
+            const street = obterParametro(url, 'logradouro');
             const neighborhood = obterParametro(url, 'bairro');
-            const lot_number = obterParametro(url, 'numero_lote');
+            const lot_number = obterParametro(url, 'numero');
             const complement = obterParametro(url, 'complemento');
 
             // Preencher os campos do formulário com os valores dos parâmetros de consulta
@@ -96,6 +216,9 @@
             document.getElementById("phone").value = phone;
             document.getElementById("birthdate").value = birthdate;
             document.getElementById("gender").value = gender;
+            document.getElementById("blood").value = blood;
+            document.getElementById("relation").value = relation;
+            document.getElementById("cep").value = cep;
             document.getElementById("country").value = country;
             document.getElementById("state").value = state;
             document.getElementById("city").value = city;
@@ -103,7 +226,75 @@
             document.getElementById("neighborhood").value = neighborhood;
             document.getElementById("lot_number").value = lot_number;
             document.getElementById("complement").value = complement;
+
+            
+                
+
         });
+
+        document.getElementById("cepNEW").addEventListener("change", () => {
+            const selectElement = document.getElementById("cepNEW");
+
+            selectedValue = selectElement.value;
+            const selectedText = selectElement.selectedOptions[0].text; // Pega o valor da opção selecionada
+
+
+            document.getElementById("country").value = ceps[selectedValue].pais
+            document.getElementById("state").value = ceps[selectedValue].estado;
+            document.getElementById("city").value = ceps[selectedValue].cidade;
+            document.getElementById("street").value = ceps[selectedValue].logradouro;
+            document.getElementById("neighborhood").value = ceps[selectedValue].bairro;
+
+
+        });
+
+        document.getElementById("cepNEW").addEventListener("change", () => {
+            const selectElement = document.getElementById("cepNEW");
+
+            selectedValue = selectElement.value;
+            const selectedText = selectElement.selectedOptions[0].text; // Pega o valor da opção selecionada
+
+
+            document.getElementById("cep").value = parseInt(selectedValue) + 1
+
+
+
+        });
+
+        document.getElementById("bloodNEW").addEventListener("change", () => {
+            const selectElement = document.getElementById("bloodNEW");
+
+            selectedValue = selectElement.value;
+            const selectedText = selectElement.selectedOptions[0].text; // Pega o valor da opção selecionada
+
+
+            document.getElementById("blood").value = parseInt(selectedValue) + 1
+
+
+
+        });
+
+        document.getElementById("relationNEW").addEventListener("change", () => {
+            const selectElement = document.getElementById("relationNEW");
+
+            selectedValue = selectElement.value;
+            const selectedText = selectElement.selectedOptions[0].text; // Pega o valor da opção selecionada
+
+
+            document.getElementById("relation").value = parseInt(selectedValue) + 1
+
+
+
+        });
+        
+                
+                
+        
+
+
+        // EDITAR CEP
+
+        
 
 
     </script>
@@ -126,6 +317,7 @@ body {
 form {
     background-color: #ffffff;
     padding: 20px;
+    margin-top: 30vh;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
@@ -189,6 +381,18 @@ input[type="button"]:hover {
 
 input[type="button"]:focus {
     outline: none;
+}
+
+h2 {
+    color: #db3333;
+
+}
+
+.NEW {
+    color: #45a049;
+
+
+
 }
 
 </style>

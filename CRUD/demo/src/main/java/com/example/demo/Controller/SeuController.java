@@ -28,61 +28,41 @@ public class SeuController {
 
     @PostMapping("/processForm")
     public String processForm(@RequestParam("name") String name,
-                              @RequestParam("email") String email,
-                              @RequestParam("phone") String phone,
-                              @RequestParam("birthdate") String birthdate,
-                              @RequestParam("gender") String gender,
-                              @RequestParam("country") String country,
-                              @RequestParam("state") String state,
-                              @RequestParam("city") String city,
-                              @RequestParam("street") String street,
-                              @RequestParam("neighborhood") String neighborhood,
-                              @RequestParam("lot_number") String lotNumber,
-                              @RequestParam("complement") String complement) {
-
+                                @RequestParam("email") String email,
+                                @RequestParam("phone") String phone,
+                                @RequestParam("birthdate") String birthdate,
+                                @RequestParam("gender") String gender,
                                 
+                                @RequestParam("relation") int civil,
+                                @RequestParam("blood") int sangue,  
+                                @RequestParam("cep") int cep,
 
-        crud.inserir("Nome", name,0);
-
-        int id_gerado = crud.getIDNome(name);
-
-        crud.inserir("Email", email,0);
-        crud.inserir("Celular", phone,0);
-        crud.inserir("Data_nascimento", birthdate,0);
-        crud.inserir("Genero", gender,0);
-
-        crud.inserir("Pais", country,0);
-
+                                @RequestParam("lot_number") String lotNumber,
+                                @RequestParam("complement") String complement) {
         
+        crud.inserirPessoa(name, birthdate, gender, sangue, civil, phone, email);
 
-        crud.inserirEstado(state, id_gerado);
-        crud.inserirCidade(city, id_gerado);
-        crud.inserirRua(street, id_gerado);
-        crud.inserirBairro(neighborhood, id_gerado);
-        crud.inserirNumeroLote(lotNumber, id_gerado); 
-        crud.inserirComplemento(complement, id_gerado);
+        int id_gerado = crud.getIDNome(name);  
 
-        crud.inserirPessoa(id_gerado);
-
-                           
+        crud.inserirEndereco(complement, lotNumber, id_gerado, cep);
+       
 
         return "redirect:/";
     }
 
     @PostMapping("/processFormEdit")
     public String processFormEdit(@RequestParam("name") String name,
-                              @RequestParam("email") String email,
-                              @RequestParam("phone") String phone,
-                              @RequestParam("birthdate") String birthdate,
-                              @RequestParam("gender") String gender,
-                              @RequestParam("country") String country,
-                              @RequestParam("state") String state,
-                              @RequestParam("city") String city,
-                              @RequestParam("street") String street,
-                              @RequestParam("neighborhood") String neighborhood,
-                              @RequestParam("lot_number") String lotNumber,
-                              @RequestParam("complement") String complement) {
+                                    @RequestParam("email") String email,
+                                    @RequestParam("phone") String phone,
+                                    @RequestParam("birthdate") String birthdate,
+                                    @RequestParam("gender") String gender,
+                                    
+                                    @RequestParam("relationNUM") int civil,
+                                    @RequestParam("bloodNUM") int sangue,  
+                                    @RequestParam("cepNUM") int cep,
 
+                                    @RequestParam("lot_number") String lotNumber,
+                                    @RequestParam("complement") String complement) {
                                 
         int id_gerado = crud.getIDNome(name);          
 
@@ -92,20 +72,9 @@ public class SeuController {
         crud.atualizar("Data_nascimento", birthdate,id_gerado);
         crud.atualizar("Genero", gender,id_gerado);
 
-        crud.atualizar("Pais", country,id_gerado);
-
-        crud.atualizar("Estado", state, id_gerado);
-
         
-        crud.atualizar("Cidade", city, id_gerado);
-        crud.atualizar("Rua", street, id_gerado);
-        crud.atualizar("Bairo", neighborhood, id_gerado);
-        crud.atualizar("Numero_Lote", lotNumber, id_gerado); 
-        crud.atualizar("Complemento", complement, id_gerado);
 
         crud.atualizarPessoa(id_gerado);
-
-
                            
 
         return "redirect:/";

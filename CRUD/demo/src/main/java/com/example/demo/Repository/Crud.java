@@ -15,6 +15,14 @@ public class Crud implements InterfaceRepository {
 
     private static List<Map<String, Object>> pessoa;
 
+    private static List<Map<String, Object>> CEPS;
+
+    private static List<Map<String, Object>> SANGUES;
+
+    private static List<Map<String, Object>> CIVIL;
+
+    
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -50,105 +58,88 @@ public class Crud implements InterfaceRepository {
     }
 
     
-    public void inserirPessoa(int id) {
+    public void inserirPessoa(String name, String birthdate, String gender, int sangue, int civil, String phone, String email) {
 
-        String sql = "INSERT INTO Pessoa (id_nome, id_genero, id_data_nascimento, id_email, id_celular,  id_complemento) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Pessoa (nome, data_nascimento, genero, id_tipo_sanguineo, id_estado_civil, celular, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, id, id, id, id, id, id);
+        jdbcTemplate.update(sql, name, birthdate, gender, sangue, civil, phone, email);
+
+    }
+
+    public void inserirEndereco(String complement, String lotNumber, int id_pessoa, int cep) {
+
+        String sql = "INSERT INTO endereco (complemento, numero, id_pessoa, id_cep) VALUES (?, ?, ?, ?)";
+
+        jdbcTemplate.update(sql, complement, lotNumber, id_pessoa, cep);
 
     }
 
 
     public int getIDNome(String descricao) {
 
-        String sql = "SELECT id FROM Nome WHERE descricao = ?";
+        String sql = "SELECT id FROM pessoa WHERE nome = ?";
 
         int id = jdbcTemplate.queryForObject(sql, Integer.class, descricao);
 
         return id;
     }
 
-    public void inserirEstado(String descricao, int id) {
-
-        String sql = "INSERT INTO Estado (descricao, id_pais) VALUES (?, ?)";
-
-        jdbcTemplate.update(sql, descricao, id);
-
-    }
-
-    public void inserirCidade(String descricao, int id) {
-
-        String sql = "INSERT INTO Cidade (descricao, id_estado) VALUES (?, ?)";
-
-        jdbcTemplate.update(sql, descricao, id);
-
-    }
-
-    public void inserirRua(String descricao, int id) {
-
-        String sql = "INSERT INTO Rua (descricao, id_cidade) VALUES (?, ?)";
-
-        jdbcTemplate.update(sql, descricao, id);
-
-    }
-
-    public void inserirBairro(String descricao, int id) {
-
-        String sql = "INSERT INTO Bairro (descricao, id_rua) VALUES (?, ?)";
-
-        jdbcTemplate.update(sql, descricao, id);
-
-    }
-
-    public void inserirComplemento(String descricao, int id) {
-
-        String sql = "INSERT INTO Complemento (descricao, id_numero) VALUES (?, ?)";
-
-        jdbcTemplate.update(sql, descricao, id);
-
-    }
-
-    public void inserirNumeroLote(String descricao, int id) {
-
-        String sql = "INSERT INTO Numero_Lote (descricao, id_bairro) VALUES (?, ?)";
-
-        jdbcTemplate.update(sql, descricao, id);
-
-    }
 
     public List<Map<String, Object>> getPessoas() {
 
-        String sql = "SELECT e.descricao AS estado, " +
-                        "       p.descricao AS pais, " +
-                        "       c.descricao AS cidade, " +
-                        "       r.descricao AS rua, " +
-                        "       b.descricao AS bairro, " +
-                        "       nl.descricao AS numero_lote, " +
-                        "       cp.descricao AS complemento, " +
-                        "       nm.descricao AS nome, " +
-                        "       eml.descricao AS email, " +
-                        "       cll.descricao AS celular, " +
-                        "       dn.descricao AS data_nascimento, " +
-                        "       gn.descricao AS genero " +
-                        "FROM estado e " +
-                        "JOIN pais p ON e.id_pais = p.id " +
-                        "JOIN cidade c ON c.id_estado = e.id " +
-                        "JOIN rua r ON r.id_cidade = c.id " +
-                        "JOIN bairro b ON b.id_rua = r.id " +
-                        "JOIN numero_lote nl ON nl.id_bairro = b.id " +
-                        "JOIN complemento cp ON cp.id_numero = nl.id " +
-                        "JOIN pessoa pss ON pss.id_complemento = cp.id " +
-                        "JOIN nome nm ON nm.id = pss.id_nome " +
-                        "JOIN email eml ON eml.id = pss.id_email " +
-                        "JOIN celular cll ON cll.id = pss.id_celular " +
-                        "JOIN data_nascimento dn ON dn.id = pss.id_data_nascimento " +
-                        "JOIN genero gn ON gn.id = pss.id_genero " 
-                        ;
+        String sql = "SELECT ed.id_cep AS id_cep, ps.descricao AS pais, e.descricao AS estado, c.descricao AS cidade, b.descricao AS bairro, l.descricao AS logradouro, cp.descricao AS cep, ed.complemento AS complemento, ed.numero AS numero, p.nome, p.data_nascimento, p.genero, p.celular, p.email, ts.descricao AS tipo_sanguineo, ec.descricao AS estado_civil FROM pais ps " +
+        "JOIN estado e ON e.id_pais = ps.id " +
+        "JOIN cidade c ON c.id_estado = e.id " +
+        "JOIN bairro b ON b.id_cidade = c.id " +
+        "JOIN logradouro l ON l.id_bairro = b.id " +
+        "JOIN cep cp ON cp.id_logradouro = l.id " +
+        "JOIN endereco ed ON ed.id_cep = cp.id " +
+        "JOIN pessoa p ON p.id = ed.id_pessoa " +
+        "JOIN tipo_sanguineo ts ON ts.id = p.id_tipo_sanguineo " +
+        "JOIN estado_civil ec ON ec.id = p.id_estado_civil ";
+        
+        
                         
 
         pessoa = jdbcTemplate.queryForList(sql);
 
         return pessoa;
+    }
+
+    public List<Map<String, Object>> getCEPS() {
+
+        String sql = "SELECT ps.descricao AS pais, e.descricao AS estado, c.descricao AS cidade, b.descricao AS bairro, l.descricao AS logradouro, cp.descricao AS cep FROM pais ps " +
+        "JOIN estado e ON e.id_pais = ps.id " +
+        "JOIN cidade c ON c.id_estado = e.id " +
+        "JOIN bairro b ON b.id_cidade = c.id " +
+        "JOIN logradouro l ON l.id_bairro = b.id " +
+        "JOIN cep cp ON cp.id_logradouro = l.id ";
+        
+        
+
+        CEPS = jdbcTemplate.queryForList(sql);
+
+        return CEPS;
+    }
+
+    public List<Map<String, Object>> getSANGUE() {
+
+        String sql = "SELECT s.descricao AS tipo_sangue FROM tipo_sanguineo s ";
+        
+
+        SANGUES = jdbcTemplate.queryForList(sql);
+
+        return SANGUES;
+    }
+
+    public List<Map<String, Object>> getCIVIL() {
+
+        String sql = "SELECT c.descricao AS civil FROM estado_civil c ";
+        
+
+        CIVIL = jdbcTemplate.queryForList(sql);
+
+        return CIVIL;
     }
 
     public void atualizarPessoa(int id_gerado) {
