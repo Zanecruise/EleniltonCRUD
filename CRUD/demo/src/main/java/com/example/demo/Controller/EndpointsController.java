@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 // ENDPOINTS PARA PAGINAS
 @Controller
-public class HomeController {
-
+public class EndpointsController {
 
     @GetMapping("/") // principal.html
     public String principal() {
@@ -19,7 +18,7 @@ public class HomeController {
         return "formulario";
     }
 
-    @GetMapping("/editar-pessoa") // formulario.html
+    @GetMapping("/editar-pessoa") // formularioEditar.html
     public String editarPessoa() {
         return "formularioEditar";
     }

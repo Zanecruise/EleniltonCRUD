@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styleFormulario.css">
     <title>Principal</title>
     
 </head>
@@ -23,23 +24,27 @@
         
         <label for="birthdate">Data de Nascimento:</label><br>
         <input type="date" id="birthdate" name="birthdate" required><br>
+
+        <label for="genderNEW">Gênero:</label><br>
+        <select id="genderNEW">
+            <!-- Options will be added dynamically -->
+        </select>
         
-        <label for="gender">Gênero:</label><br>
-        <input type="text" id="gender" name="gender" required><br>
+        <input type="text" id="gender" name="gender" readonly style="display: none;"><br>
 
         <label for="relationNEW">Estado Civil:</label><br>
         <select id="relationNEW">
             <!-- Options will be added dynamically -->
         </select>
 
-        <input type="text" id="relation" name="relation" readonly><br>
+        <input type="text" id="relation" name="relation" readonly style="display: none;"><br>
 
         <label for="bloodNEW">Tipo Sanguineo:</label><br>
         <select id="bloodNEW">
             <!-- Options will be added dynamically -->
         </select>
 
-        <input type="text" id="blood" name="blood" readonly><br>
+        <input type="text" id="blood" name="blood" readonly style="display: none;"><br>
 
         <h2>Local</h2>
 
@@ -48,7 +53,7 @@
             <!-- Options will be added dynamically -->
         </select>
 
-        <input type="text" id="cep" name="cep" readonly><br>
+        <input type="text" id="cep" name="cep" readonly style="display: none;"><br>
         
         
         <label for="country">País:</label><br>
@@ -74,16 +79,16 @@
         
         <input type="submit" value="Enviar">
 
-        <input type="button" id="btnExcluir" value="Excluir" disabled>
-
-
     </form>
 
-    <script>
+</body>
 
-        let ceps;
+<script>
+
+let ceps;
         let sangues;
         let civils;
+        let generos;
 
         let selectedValue
 
@@ -135,7 +140,7 @@
                     alert('Ocorreu um erro ao obter os dados');
                 });
 
-                fetch('/chamarCIVIL')
+            fetch('/chamarCIVIL')
                 .then(response => response.json())
                 .then(responseData => {
                     civils = responseData; // Atribua os dados da resposta à variável data
@@ -158,6 +163,28 @@
                     alert('Ocorreu um erro ao obter os dados');
                 });
             
+            fetch('/chamarGENERO')
+                .then(response => response.json())
+                .then(responseData => {
+                    generos = responseData; // Atribua os dados da resposta à variável data
+                    const selectElement = document.getElementById("genderNEW");
+                    
+                    generos.forEach((objeto, index) => {
+                        const option = document.createElement("option");
+                        option.value = index; // Use o índice como valor para identificar o objeto selecionado
+                        option.text = objeto.genero; // Exibe o nome do objeto na lista
+                        selectElement.appendChild(option);
+
+
+                    });
+
+                    
+
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Ocorreu um erro ao obter os dados');
+                });
 
   
 
@@ -218,90 +245,19 @@
 
         });
 
-    </script>
+        document.getElementById("genderNEW").addEventListener("change", () => {
+            const selectElement = document.getElementById("genderNEW");
 
-</body>
+            selectedValue = selectElement.value;
+            const selectedText = selectElement.selectedOptions[0].text; // Pega o valor da opção selecionada
 
-<style>
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #1b1b1b;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+            document.getElementById("gender").value = parseInt(selectedValue) + 1
 
-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
 
-label {
-    font-weight: bold;
-}
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="date"],
-select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+        });
 
-input[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+</script>
 
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-input[type="submit"]:focus {
-    outline: none;
-}
-
-input[type="button"] {
-    width: 100%;
-    background-color: #db3333;
-    color: white;
-    padding: 12px 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-input[type="button"]:hover {
-    background-color: #ac2020;
-}
-
-input[type="button"]:focus {
-    outline: none;
-}
-
-</style>
 </html>

@@ -2,12 +2,9 @@ package com.example.demo.Repository;
 
 import java.util.Map;
 import java.util.List;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 
 
 @Repository
@@ -21,7 +18,7 @@ public class Crud implements InterfaceRepository {
 
     private static List<Map<String, Object>> CIVIL;
 
-    
+    private static List<Map<String, Object>> GENERO;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -31,75 +28,44 @@ public class Crud implements InterfaceRepository {
     }
 
     @Override
-    public void inserir(String nomeTabela, String descricao, int id) {
+    public void inserir(String name, String birthdate, String phone, String email, String lotNumber, String complement, int sangue, int civil, int gender, int cep) {
 
-        String sql = "INSERT INTO " + nomeTabela + " (descricao) VALUES (?) ";
+        String sql = "INSERT INTO Pessoa (nome, data_nascimento, celular, email, numero_residencia, complemento, id_tipo_sanguineo, id_estado_civil, id_genero, id_cep) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, descricao);
+        jdbcTemplate.update(sql, name, birthdate, phone, email, lotNumber, complement, sangue, civil, gender, cep);
 
     }
 
     @Override
-    public void atualizar(String nomeTabela, String descricao, int id) {
-        // Consulta SQL para atualizar a descrição com base no ID
-        String sql = "UPDATE " + nomeTabela + " SET descricao = ? WHERE id = ? ";
+    public void atualizar(String name, String birthdate, String phone, String email, String lotNumber, String complement, int sangue, int civil, int gender, int cep,int id) {
+        
+        String sql = "UPDATE Pessoa SET nome = ?, data_nascimento = ?, celular = ?, email = ?, numero_residencia = ?, complemento = ?, id_tipo_sanguineo = ?, id_estado_civil = ?, id_genero = ?, id_cep = ? WHERE id = ?";
 
-        // Executar a atualização usando o JdbcTemplate
-        jdbcTemplate.update(sql, descricao, id);
+        jdbcTemplate.update(sql, name, birthdate, phone, email, lotNumber, complement, sangue, civil, gender, cep, id);
+
     }
 
     @Override
-    public void excluir(String nomeTabela, int id) {
-        // Consulta SQL para excluir o registro com base no ID
-        String sql = "DELETE FROM " + nomeTabela + " WHERE id = ? ";
+    public void excluir(int id) {
+        
+        String sql = "DELETE FROM Pessoa WHERE id = ? ";
 
-        // Executar a exclusão usando o JdbcTemplate
+        
         jdbcTemplate.update(sql, id);
     }
 
-    
-    public void inserirPessoa(String name, String birthdate, String gender, int sangue, int civil, String phone, String email) {
-
-        String sql = "INSERT INTO Pessoa (nome, data_nascimento, genero, id_tipo_sanguineo, id_estado_civil, celular, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        jdbcTemplate.update(sql, name, birthdate, gender, sangue, civil, phone, email);
-
-    }
-
-    public void inserirEndereco(String complement, String lotNumber, int id_pessoa, int cep) {
-
-        String sql = "INSERT INTO endereco (complemento, numero, id_pessoa, id_cep) VALUES (?, ?, ?, ?)";
-
-        jdbcTemplate.update(sql, complement, lotNumber, id_pessoa, cep);
-
-    }
-
-
-    public int getIDNome(String descricao) {
-
-        String sql = "SELECT id FROM pessoa WHERE nome = ?";
-
-        int id = jdbcTemplate.queryForObject(sql, Integer.class, descricao);
-
-        return id;
-    }
-
-
     public List<Map<String, Object>> getPessoas() {
 
-        String sql = "SELECT ed.id_cep AS id_cep, ps.descricao AS pais, e.descricao AS estado, c.descricao AS cidade, b.descricao AS bairro, l.descricao AS logradouro, cp.descricao AS cep, ed.complemento AS complemento, ed.numero AS numero, p.nome, p.data_nascimento, p.genero, p.celular, p.email, ts.descricao AS tipo_sanguineo, ec.descricao AS estado_civil FROM pais ps " +
-        "JOIN estado e ON e.id_pais = ps.id " +
-        "JOIN cidade c ON c.id_estado = e.id " +
-        "JOIN bairro b ON b.id_cidade = c.id " +
-        "JOIN logradouro l ON l.id_bairro = b.id " +
-        "JOIN cep cp ON cp.id_logradouro = l.id " +
-        "JOIN endereco ed ON ed.id_cep = cp.id " +
-        "JOIN pessoa p ON p.id = ed.id_pessoa " +
-        "JOIN tipo_sanguineo ts ON ts.id = p.id_tipo_sanguineo " +
-        "JOIN estado_civil ec ON ec.id = p.id_estado_civil ";
-        
-        
-                        
+            String sql = " SELECT p.id AS id_pessoa, ps.descricao AS pais, e.descricao AS estado, c.descricao AS cidade, b.descricao AS bairro, l.descricao AS logradouro, cp.descricao AS cep, p.complemento AS complemento, p.numero_residencia AS numero, p.nome, p.data_nascimento, gn.descricao AS genero , p.celular, p.email, ts.descricao AS tipo_sanguineo, ec.descricao AS estado_civil FROM pais ps " +
+                       " JOIN estado e ON e.id_pais = ps.id " +
+                       " JOIN cidade c ON c.id_estado = e.id " +
+                       " JOIN bairro b ON b.id_cidade = c.id " +
+                       " JOIN logradouro l ON l.id_bairro = b.id " +
+                       " JOIN cep cp ON cp.id_logradouro = l.id " +
+                       " JOIN pessoa p ON p.id_cep = cp.id " +
+                       " JOIN tipo_sanguineo ts ON ts.id = p.id_tipo_sanguineo " +
+                       " JOIN estado_civil ec ON ec.id = p.id_estado_civil " +
+                       " JOIN genero gn ON gn.id = p.id_genero " ;
 
         pessoa = jdbcTemplate.queryForList(sql);
 
@@ -114,8 +80,6 @@ public class Crud implements InterfaceRepository {
         "JOIN bairro b ON b.id_cidade = c.id " +
         "JOIN logradouro l ON l.id_bairro = b.id " +
         "JOIN cep cp ON cp.id_logradouro = l.id ";
-        
-        
 
         CEPS = jdbcTemplate.queryForList(sql);
 
@@ -142,13 +106,17 @@ public class Crud implements InterfaceRepository {
         return CIVIL;
     }
 
-    public void atualizarPessoa(int id_gerado) {
+    public List<Map<String, Object>> getGENERO() {
+
+        String sql = "SELECT g.descricao AS genero FROM genero g ";
         
-        String sql = "UPDATE Pessoa SET id_nome = ?, id_genero = ?, id_data_nascimento = ?, id_email = ?, id_celular = ?, id_complemento = ? WHERE id = ?";
 
-        jdbcTemplate.update(sql, id_gerado, id_gerado, id_gerado, id_gerado, id_gerado, id_gerado);
+        GENERO = jdbcTemplate.queryForList(sql);
 
+        return GENERO;
     }
+
+    
     
 
 }

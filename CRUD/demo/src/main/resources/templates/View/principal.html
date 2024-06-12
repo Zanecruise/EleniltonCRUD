@@ -3,114 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atributos de Pessoas</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1d1a1a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+    <link rel="stylesheet" href="stylePrincipal.css">
+    <script src="scriptPrincipal.js"></script>
+    <title>Tela Principal</title>
 
-        .person-box {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            width: 300px;
-            text-align: center;
-        }
-
-        footer {
-            margin-top: auto;           
-            color: white;
-            text-align: center;
-            padding: 10px;
-            width: 100%;
-        }
-
-        footer .create-button {
-            background-color: #28a745; /* Verde */
-            padding: 8px 16px; /* Pequeno */
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-            color: white;
-        }
-
-        footer .create-button:hover {
-            background-color: #218838; /* Tom mais escuro de verde ao passar o mouse */
-        }
-    </style>
 </head>
+
 <body>
+
     <h1>Atributos de Pessoas</h1>
 
-    <!-- Divs geradas automaticamente para cada pessoa -->
     <div id="personContainer"></div>
 
     <select id="objetoSelect">
-        <!-- Options will be added dynamically -->
+        
     </select>
+
     <button id="editarBotao">Editar</button>
     
 
     <footer>
-        <!-- Botão verde e pequeno para criar uma nova pessoa -->
+       
         <a class="create-button" href="/criar-pessoa">Criar Pessoa</a>
+
     </footer>
 
-    <script>
-       
-       let data; // Defina a variável data fora do escopo do fetch
-
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/chamarFuncaoJava')
-                .then(response => response.json())
-                .then(responseData => {
-                    data = responseData; // Atribua os dados da resposta à variável data
-                    const selectElement = document.getElementById("objetoSelect");
-                    
-                    data.forEach((objeto, index) => {
-                        const option = document.createElement("option");
-                        option.value = index; // Use o índice como valor para identificar o objeto selecionado
-                        option.text = objeto.nome; // Exibe o nome do objeto na lista
-                        selectElement.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    alert('Ocorreu um erro ao obter os dados');
-                });
-
-            document.getElementById("editarBotao").addEventListener("click", () => {
-                const selectElement = document.getElementById("objetoSelect");
-                const selectedIndex = selectElement.value;
-                
-                if (selectedIndex !== "") {
-                    const objetoSelecionado = data[selectedIndex];
-                    const queryParams = Object.keys(objetoSelecionado).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(objetoSelecionado[key])}`).join("&");
-                    const url = `/editar-pessoa?${queryParams}`;
-                    window.location.href = url;
-                } else {
-                    alert("Por favor, selecione uma pessoa para editar.");
-                }
-            });
-        });
-
-
-
-
-
-        
-
-        
-    </script>
 </body>
 </html>
